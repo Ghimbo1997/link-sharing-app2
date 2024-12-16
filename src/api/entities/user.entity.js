@@ -1,7 +1,21 @@
 import { authInstance } from "../index.config";
 
 const entity = {
-  register: async () => {},
+  register: async (payload) => {
+    try {
+      const response = await authInstance.post(
+        "/accounts:signUpWithPassword?",
+        {
+          email: payload.email,
+          password: payload.password,
+          returnSecureToken: true,
+        }
+      );
+      return response.data; // {idToken,...,refreshToken:"...",...}
+    } catch (error) {
+      console.log("[API-ERROR]: Method:register | Message-", error.toString());
+    }
+  },
   login: async (payload) => {
     //Tip:payloadExample={email:"myemail.com",password:"myPassword"}
     try {
